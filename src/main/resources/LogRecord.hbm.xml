@@ -1,0 +1,44 @@
+
+<hibernate-mapping>
+    <class name="com.ksv.LogRecord" table="pap_log">
+        <id name="logId" type="int">
+            <column name="logId" precision="5" scale="0"/>
+            <generator class="sequence">
+                <param name="sequence">sq_pap_log_id</param>
+            </generator>
+        </id>
+        <property name="date"><column name="dt"/></property>
+        <property name="event"/>
+        <property name="ip"/>
+        <property name="client"/>
+        <property name="id"/>
+        <property name="err"/>
+        <property name="strErr"/>
+        <property name="db"/>
+        <property name="seg"/>
+        <property name="file"><column name="file_name"></column></property>
+        <property name="score"/>
+        <property name="reclist"/>
+        <property name="errs"/>
+        <property name="skip"/>
+        <property name="total"/>
+        <property name="qmask"/>
+        <property name="cmask"/>
+        <property name="rmask"/>
+        <property name="dbsize"/>
+        <property name="fpoints"/>
+        <property name="ftxt465"/>
+        <property name="ftxt459"/>
+        <property name="ftxt103"/>
+        <property name="ftxt105"/>
+        <property name="ftxt107"/>
+        <property name="ftxt110"/>
+        <property name="ftxt111"/>
+        <property name="ftxt112"/>
+        <property name="ftxt113"/>
+        <property name="ftxt116"/>
+        <property name="ftxt117"/>
+        <property name="ftxt118"/>
+        <property name="ftxt121"/>
+    </class>
+</hibernate-mapping>

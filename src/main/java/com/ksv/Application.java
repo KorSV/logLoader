@@ -1,5 +1,6 @@
 package com.ksv;
 
+import com.ksv.DAO.HibernateUtil;
 import com.ksv.printers.ConsolePrinter;
 import com.ksv.printers.DbPrinter;
 import com.ksv.printers.IPrinter;
@@ -9,6 +10,7 @@ import com.ksv.watcher.IWatcher;
 import com.ksv.watcher.Watcher;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.Session;
 
 public class Application {
     public static String path;
@@ -60,7 +62,7 @@ public class Application {
     public static void run(){
         logger.info("Start application logLoader ........");
 
-
+        Session session = HibernateUtil.buildSessionFactory().openSession();
 
         if (type.equals("all")){
             logger.info("Обработка файла: "+file);
@@ -70,19 +72,19 @@ public class Application {
         Log log = reader.read();
         IPrinter printer;
         if (output.equals("console")) {
-            printer = new ConsolePrinter(log);
+            printer = new ConsolePrinter(log, session);
         }
         else if (output.equals("db")) {
-            printer = new DbPrinter(log);
+            printer = new DbPrinter(log, session);
         }else{
-            printer = new ConsolePrinter(log);
+            printer = new ConsolePrinter(log, session);
         }
         printer.printMissing();
 
         if (type.equals("all")) {
            System.exit(0);
         }else if (type.equals("watch")){
-            IWatcher watcher = new Watcher(path, file, log);
+            IWatcher watcher = new Watcher(path, file, log, session);
             watcher.watch();
         }
     }

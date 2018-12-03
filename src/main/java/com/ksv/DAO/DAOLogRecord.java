@@ -14,9 +14,14 @@ import javax.persistence.criteria.Root;
 
 public class DAOLogRecord {
     private static Logger logger = LogManager.getLogger(DAOLogRecord.class);
+    private Session session;
+
+    public DAOLogRecord(Session session) {
+        this.session = session;
+    }
 
     public void saveAll(Log log){
-        Session session = HibernateUtil.buildSessionFactory().openSession();
+        //Session session = HibernateUtil.buildSessionFactory().openSession();
         session.beginTransaction();
         for (LogRecord logRecord : log.getLines()) {
             try {
@@ -27,11 +32,11 @@ public class DAOLogRecord {
             }
         }
         session.getTransaction().commit();
-        HibernateUtil.shutdown();
+        //HibernateUtil.shutdown();
     }
 
     public LogRecord getLastRecord(){
-        Session session = HibernateUtil.buildSessionFactory().openSession();
+        //Session session = HibernateUtil.buildSessionFactory().openSession();
         session.beginTransaction();
 
         try {
@@ -52,9 +57,10 @@ public class DAOLogRecord {
             LogRecord lastLogRecord = q.getSingleResult();
             session.getTransaction().commit();
 
-            HibernateUtil.shutdown();
+            //HibernateUtil.shutdown();
             return lastLogRecord;
         }catch (Exception e){
+            session.getTransaction().commit();
             return null;
         }
 

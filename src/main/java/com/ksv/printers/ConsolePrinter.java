@@ -2,12 +2,13 @@ package com.ksv.printers;
 
 import com.ksv.Log;
 import com.ksv.LogRecord;
+import org.hibernate.Session;
 
 public class ConsolePrinter extends Printer implements IPrinter {
 
 
-    public ConsolePrinter( Log log) {
-        super( log);
+    public ConsolePrinter( Log log , Session session) {
+        super( log, session);
     }
 
     public void print(Log log){

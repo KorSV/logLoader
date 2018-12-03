@@ -9,6 +9,7 @@ import com.ksv.readers.IReader;
 import com.ksv.readers.ReadFromFile;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.Session;
 
 import java.io.IOException;
 import java.nio.file.*;
@@ -22,14 +23,16 @@ public class Watcher implements IWatcher {
     private String file;
     private Log oldLog;
     private static Logger logger = LogManager.getLogger(Watcher.class);
+    private Session session;
 
     public Watcher() {
     }
 
-    public Watcher( String path, String file, Log oldLog) {
+    public Watcher( String path, String file, Log oldLog, Session session) {
         this.path = path;
         this.file = file;
         this.oldLog = oldLog;
+        this.session = session;
     }
 
     public String getPath() {
@@ -97,12 +100,12 @@ public class Watcher implements IWatcher {
 
         if ( Application.output.equals("console") ) {
 
-        printer = new ConsolePrinter( newLog);
+        printer = new ConsolePrinter( newLog, session);
         }
         else if (Application.output.equals("db")){
-            printer = new DbPrinter( newLog);
+            printer = new DbPrinter( newLog, session);
         } else{
-            printer = new ConsolePrinter( newLog);
+            printer = new ConsolePrinter( newLog, session);
         }
 
         if (newLog.size()>oldLog.size()){

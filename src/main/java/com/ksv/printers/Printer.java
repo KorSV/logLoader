@@ -5,16 +5,20 @@ import com.ksv.Log;
 import com.ksv.LogRecord;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.Session;
 
 
 public abstract class Printer implements IPrinter{
 
     public Log log;
 
+    public Session session;
+
     public static Logger logger = LogManager.getLogger(Printer.class);
 
-    public Printer( Log log) {
+    public Printer( Log log, Session session) {
         this.log = log;
+        this.session = session;
     }
 
     public void printAll() {
@@ -24,7 +28,7 @@ public abstract class Printer implements IPrinter{
     /* Напечатает все отсутствующие в БД*/
     public void printMissing(){
         logger.info("Проверка расхождения файла и БД!!!");
-        LogRecord logRecord = new DAOLogRecord().getLastRecord();
+        LogRecord logRecord = new DAOLogRecord(session).getLastRecord();
         if (logRecord == null) {
             logger.info("В базе данных нет ни одной записи. Загрузка в БД всего файла ......");
             printAll();
